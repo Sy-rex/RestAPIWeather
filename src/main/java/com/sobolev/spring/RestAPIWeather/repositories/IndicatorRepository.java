@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IndicatorRepository extends JpaRepository<Indicator, Integer> {
-    @Query("SELECT COUNT(i.raining) FROM Indicator i")
+    @Query("SELECT COUNT(i.raining) FROM Indicator i WHERE i.raining = true")
     Integer countAllRaining();
 }

@@ -12,10 +12,12 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class IndicatorService {
     private final IndicatorRepository indicatorRepository;
+    private final SensorService sensorService;
 
     @Autowired
-    public IndicatorService(IndicatorRepository indicatorRepository) {
+    public IndicatorService(IndicatorRepository indicatorRepository, SensorService sensorService) {
         this.indicatorRepository = indicatorRepository;
+        this.sensorService = sensorService;
     }
 
     public List<Indicator> findAll() {
@@ -25,5 +27,12 @@ public class IndicatorService {
 
     public Integer getRainyDaysCount() {
         return indicatorRepository.countAllRaining();
+    }
+
+    @Transactional
+    public void save(Indicator indicator) {
+        indicator.setSensor(sensorService.findByName(indicator.getSensor().getName()));
+
+        indicatorRepository.save(indicator);
     }
 }

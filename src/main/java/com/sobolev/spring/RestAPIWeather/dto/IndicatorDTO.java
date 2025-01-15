@@ -7,39 +7,41 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class IndicatorDTO {
     @Min(value = -100, message = "Value should be greater then -100.01")
     @Max(value = 100, message = "Value should be smaller then 100.01")
-    private double value;
+    @NotNull(message = "Value shouldn`t be empty")
+    private Double value;
 
-    @NotEmpty(message = "Raining should be true or false")
-    private boolean raining;
+    @NotNull(message = "Raining should be true or false")
+    private Boolean raining;
 
-    private String sensorName;
+    private SensorDTO sensor;
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public void setRaining(boolean raining) {
+    public void setRaining(Boolean raining) {
         this.raining = raining;
     }
 
-    public boolean getRaining() {
+    public Boolean getRaining() {
         return raining;
     }
 
-    public String getSensorName() {
-        return sensorName;
+    public SensorDTO getSensor() {
+        return sensor;
     }
 
-    public void setSensorName(String sensorName) {
-        this.sensorName = sensorName;
+    public void setSensor(SensorDTO sensor) {
+        this.sensor = sensor;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class IndicatorDTO {
         return "IndicatorDTO{" +
                 "value=" + value +
                 ", raining=" + raining +
-                ", sensor=" + sensorName +
+                ", sensor=" + sensor +
                 '}';
     }
 }
