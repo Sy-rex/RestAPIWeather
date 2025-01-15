@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,5 +21,9 @@ public class IndicatorService {
     public List<Indicator> findAll() {
         List<Indicator> indicators = indicatorRepository.findAll();
         return indicatorRepository.findAll();
+    }
+
+    public Integer getRainyDaysCount() {
+        return indicatorRepository.countAllRaining();
     }
 }

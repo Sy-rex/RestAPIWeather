@@ -31,6 +31,11 @@ public class IndicatorController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/rainyDaysCount")
+    public Integer getRainyDaysCount() {
+        return indicatorService.getRainyDaysCount();
+    }
+
     private IndicatorDTO convertToIndicatorDTO(Indicator indicator) {
         return modelMapper.map(indicator, IndicatorDTO.class);
     }
