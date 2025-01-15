@@ -5,6 +5,7 @@ import com.sobolev.spring.RestAPIWeather.models.Indicator;
 import com.sobolev.spring.RestAPIWeather.services.IndicatorService;
 import com.sobolev.spring.RestAPIWeather.util.MeasurementErrorResponse;
 import com.sobolev.spring.RestAPIWeather.util.MeasurementsNotAdded;
+import com.sobolev.spring.RestAPIWeather.util.SensorSearchValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,11 +25,15 @@ public class IndicatorController {
 
     private final IndicatorService indicatorService;
     private final ModelMapper modelMapper;
+    private final SensorSearchValidator sensorSearchValidator;
 
     @Autowired
-    public IndicatorController(IndicatorService indicatorService, ModelMapper modelMapper) {
+    public IndicatorController(IndicatorService indicatorService,
+                               ModelMapper modelMapper,
+                               SensorSearchValidator sensorSearchValidator) {
         this.indicatorService = indicatorService;
         this.modelMapper = modelMapper;
+        this.sensorSearchValidator = sensorSearchValidator;
     }
 
     @GetMapping()
@@ -37,13 +43,15 @@ public class IndicatorController {
     }
 
     @GetMapping("/rainyDaysCount")
-    public Integer getRainyDaysCount() {
-        return indicatorService.getRainyDaysCount();
+    public Map<String, Integer> getRainyDaysCount() {
+        return Map.of("count",indicatorService.getRainyDaysCount());
     }
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addIndicator(@RequestBody @Valid IndicatorDTO indicatorDTO,
                                                    BindingResult bindingResult) {
+        sensorSearchValidator.validate(convertToIndicator(indicatorDTO), bindingResult);
+
         if(bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -51,12 +59,12 @@ public class IndicatorController {
             for(FieldError error : errors) {
                 errorMsg.append(error.getField())
                         .append(" - ").append(error.getDefaultMessage())
-                        .append(";");
+                        .append(" \n");
             }
 
             throw new MeasurementsNotAdded(errorMsg.toString());
         }
-        indicatorService.save(convertToIndicator(indicatorDTO)); // TODO
+        indicatorService.save(convertToIndicator(indicatorDTO));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
