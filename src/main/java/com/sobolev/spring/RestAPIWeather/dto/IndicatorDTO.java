@@ -16,7 +16,7 @@ public class IndicatorDTO {
     @NotEmpty(message = "Raining should be true or false")
     private boolean raining;
 
-    private Sensor sensor;
+    private String sensorName;
 
     public double getValue() {
         return value;
@@ -26,19 +26,28 @@ public class IndicatorDTO {
         this.value = value;
     }
 
-    public boolean isRaining() {
-        return raining;
-    }
-
-    public void setRaining() {
+    public void setRaining(boolean raining) {
         this.raining = raining;
     }
 
-    public Sensor getSensor() {
-        return sensor;
+    public boolean getRaining() {
+        return raining;
     }
 
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+    public String getSensorName() {
+        return sensorName;
+    }
+
+    public void setSensorName(String sensorName) {
+        this.sensorName = sensorName;
+    }
+
+    @Override
+    public String toString() {
+        return "IndicatorDTO{" +
+                "value=" + value +
+                ", raining=" + raining +
+                ", sensor=" + sensorName +
+                '}';
     }
 }

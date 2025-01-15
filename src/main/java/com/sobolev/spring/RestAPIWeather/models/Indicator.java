@@ -1,5 +1,6 @@
 package com.sobolev.spring.RestAPIWeather.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -25,6 +26,7 @@ public class Indicator {
 
     @ManyToOne
     @JoinColumn(name = "sensor_id",referencedColumnName = "id")
+    @JsonIgnore
     private Sensor sensor;
 
     public int getId() {
@@ -57,5 +59,15 @@ public class Indicator {
 
     public void setSensor(Sensor sensor) {
         this.sensor = sensor;
+    }
+
+    @Override
+    public String toString() {
+        return "Indicator{" +
+                "id=" + id +
+                ", value=" + value +
+                ", raining=" + raining +
+                ", sensor=" + sensor +
+                '}';
     }
 }

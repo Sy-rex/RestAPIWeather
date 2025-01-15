@@ -1,5 +1,7 @@
 package com.sobolev.spring.RestAPIWeather;
 
+import com.sobolev.spring.RestAPIWeather.dto.IndicatorDTO;
+import com.sobolev.spring.RestAPIWeather.models.Indicator;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +16,9 @@ public class RestApiWeatherApplication {
 
 	@Bean
 	public ModelMapper modelMapper() {
-		return new ModelMapper();
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.typeMap(Indicator.class, IndicatorDTO.class)
+				.addMapping(src -> src.getSensor().getName(), IndicatorDTO::setSensorName);
+		return modelMapper;
 	}
 }

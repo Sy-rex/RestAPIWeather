@@ -20,7 +20,7 @@ public class Sensor {
     @Size(min = 3, max = 30, message = "Name should be between 3 and 30 characters")
     private String name;
 
-    @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL)
     private List<Indicator> indicators;
 
     public int getId() {
@@ -45,5 +45,10 @@ public class Sensor {
 
     public void setIndicators(List<Indicator> indicators) {
         this.indicators = indicators;
+    }
+
+    @Override
+    public String toString() {
+        return "name= " + name;
     }
 }

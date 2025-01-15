@@ -34,5 +34,4 @@ public class IndicatorController {
     private IndicatorDTO convertToIndicatorDTO(Indicator indicator) {
         return modelMapper.map(indicator, IndicatorDTO.class);
     }
-
 }
